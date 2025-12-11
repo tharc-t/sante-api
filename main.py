@@ -2,13 +2,13 @@ import os
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Time, text
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Time, text, select
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 from passlib.hash import argon2
 from datetime import datetime, timedelta, timezone, time
 from jose import jwt, JWTError
-from typing import Optional, List
+from typing import Optional, List, AsyncGenerator
 
 # ------------------ CONFIG ------------------
 SECRET_KEY = os.getenv("SECRET_KEY", "SUPER_SECRET_KEY_CHANGE_ME")
@@ -139,7 +139,7 @@ def create_access_token(data: dict):
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
 # ------------------ SESSION ------------------
-async def get_db() -> AsyncSession:
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
     async with async_session() as session:
         yield session
 
