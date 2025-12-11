@@ -3,9 +3,9 @@ services:
   db:
     image: postgres:16-alpine
     environment:
-      POSTGRES_USER: myapp
-      POSTGRES_PASSWORD: 12345
-      POSTGRES_DB: flutterusers
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: songya15/02
+      POSTGRES_DB: clinique
     ports:
       - "5432:5432"
     volumes:
@@ -15,7 +15,7 @@ services:
     ports:
       - "10000:10000"
     environment:
-      DATABASE_URL: postgresql+asyncpg://myapp:12345@db:5432/flutterusers
+      DATABASE_URL: postgresql+asyncpg://postgres:songya15/02@db:5432/clinique
       SECRET_KEY: "LOCAL_KEY"
     depends_on:
       - db
